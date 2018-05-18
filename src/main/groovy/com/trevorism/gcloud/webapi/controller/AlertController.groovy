@@ -23,24 +23,32 @@ import java.util.logging.Logger
 class AlertController {
 
     private static final Logger log = Logger.getLogger(AlertController.class.name)
-    EventProducer<Map> eventProducer = new PingingEventProducer<>()
+    EventProducer<Email> eventProducer = new PingingEventProducer<>()
 
     @ApiOperation(value = "Send an alert")
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    boolean sendAlert(@Context HttpHeaders headers, Map data) {
+    boolean sendAlert(@Context HttpHeaders headers, Map inputData) {
         String correlationId = headers?.getHeaderString(HeadersHttpClient.CORRELATION_ID_HEADER_KEY)
+        if(!correlationId)
+            correlationId = UUID.randomUUID().toString()
+
         log.info("Sending an alert with correlationId: ${correlationId}")
 
-        data["recipients"] = ["alerts@trevorism.com"]
-        data["subject"] = (data["subject"]) ?: "Alert: ${correlationId}"
-        data["body"] = (data["body"]) ?: buildAlertText(correlationId, data)
-
-
+        Email data = createEmail(inputData, correlationId)
         eventProducer.sendEvent("email", data, correlationId)
+        return true
     }
 
-    private static String buildAlertText(String correlationId, Map data) {
-        "${data}\nCorrelation ID: ${correlationId}"
+    private Email createEmail(Map inputData, String correlationId) {
+        def data = new Email()
+        data.recipients = ["alerts@trevorism.com"]
+        data.subject = (inputData["subject"]) ? (inputData["subject"]).toString() : "Alert: ${correlationId}"
+        data.body = (inputData["body"]) ? (inputData["body"]).toString() : buildAlertText(correlationId, inputData)
+        data
+    }
+
+    private static String buildAlertText(String correlationId, Map inputData) {
+        "${inputData}\nCorrelation ID: ${correlationId}"
     }
 }
