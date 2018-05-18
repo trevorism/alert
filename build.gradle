@@ -49,8 +49,7 @@ dependencies {
     compile 'io.swagger:swagger-jersey2-jaxrs:1.5.19'
 
     compile 'com.trevorism:secure-utils:1.0.1'
-    //compile 'com.trevorism:datastore-client:1.1.1'
-    //compile 'com.trevorism:eventhub-client:1.4.0'
+    compile 'com.trevorism:eventhub-client:1.4.0'
 
     acceptanceCompile 'info.cukes:cucumber-groovy:1.2.5'
     acceptanceCompile 'com.trevorism:http-utils:1.0.1'
