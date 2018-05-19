@@ -2,7 +2,7 @@ package com.trevorism.gcloud.webapi.controller
 
 import com.trevorism.event.EventProducer
 import com.trevorism.event.PingingEventProducer
-import com.trevorism.event.model.WorkComplete
+import com.trevorism.gcloud.model.Email
 import com.trevorism.http.headers.HeadersHttpClient
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
@@ -28,7 +28,7 @@ class AlertController {
     @ApiOperation(value = "Send an alert")
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    boolean sendAlert(@Context HttpHeaders headers, Map inputData) {
+    Email sendAlert(@Context HttpHeaders headers, Map inputData) {
         String correlationId = headers?.getHeaderString(HeadersHttpClient.CORRELATION_ID_HEADER_KEY)
         if(!correlationId)
             correlationId = UUID.randomUUID().toString()
@@ -37,7 +37,7 @@ class AlertController {
 
         Email data = createEmail(inputData, correlationId)
         eventProducer.sendEvent("email", data, correlationId)
-        return true
+        return data
     }
 
     private Email createEmail(Map inputData, String correlationId) {

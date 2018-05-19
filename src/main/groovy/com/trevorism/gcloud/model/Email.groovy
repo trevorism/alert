@@ -1,10 +1,12 @@
-package com.trevorism.gcloud.webapi.controller
+package com.trevorism.gcloud.model
 
+import groovy.transform.Canonical
 import io.swagger.annotations.ApiModelProperty
 
 /**
  * @author tbrooks
  */
+@Canonical
 class Email {
     @ApiModelProperty(value = "The subject of the email", dataType = "string")
     String subject
