@@ -4,6 +4,8 @@ import com.trevorism.event.EventProducer
 import com.trevorism.event.PingingEventProducer
 import com.trevorism.gcloud.model.Email
 import com.trevorism.http.headers.HeadersHttpClient
+import com.trevorism.secure.Roles
+import com.trevorism.secure.Secure
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 
@@ -27,6 +29,7 @@ class AlertController {
 
     @ApiOperation(value = "Send an alert")
     @POST
+    @Secure(Roles.USER)
     @Consumes(MediaType.APPLICATION_JSON)
     Email sendAlert(@Context HttpHeaders headers, Map inputData) {
         String correlationId = headers?.getHeaderString(HeadersHttpClient.CORRELATION_ID_HEADER_KEY)
