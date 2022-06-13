@@ -1,4 +1,4 @@
-package com.trevorism.eventhub
+package com.trevorism.gcloud
 
 /**
  * @author tbrooks
@@ -10,29 +10,29 @@ this.metaClass.mixin(cucumber.api.groovy.EN)
 def contextRootContent
 def pingContent
 
-Given(~/^the alert application is alive$/) { ->
+Given(/the alert application is alive/) { ->
     try{
-        new URL("https://alert-dot-trevorism-gcloud.appspot.com/ping").text
+        new URL("https://alerts.datastore.trevorism.com/ping").text
     }
     catch (Exception ignored){
         Thread.sleep(10000)
-        new URL("https://alert-dot-trevorism-gcloud.appspot.com/ping").text
+        new URL("https://alerts.datastore.trevorism.com/ping").text
     }
 }
 
-When(~/^I navigate to "([^"]*)"$/) { String url ->
+When(/I navigate to {url}/) { String url ->
     contextRootContent = new URL(url).text
 }
 
-Then(~/^then a link to the help page is displayed$/) { ->
+Then(/then a link to the help page is displayed/) {  ->
     assert contextRootContent
     assert contextRootContent.contains("/help")
 }
 
-When(~/^I ping the application deployed to "([^"]*)"$/) { String url ->
+When(/I ping the application deployed to {url}/) { String url ->
     pingContent = new URL("${url}/ping").text
 }
 
-Then(~/^pong is returned, to indicate the service is alive$/) { ->
+Then(/pong is returned, to indicate the service is alive/) {  ->
     assert pingContent == "pong"
 }
