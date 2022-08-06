@@ -12,16 +12,16 @@ def pingContent
 
 Given(/the alert application is alive/) { ->
     try{
-        new URL("https://alerts.datastore.trevorism.com/ping").text
+        new URL("https://alert.datastore.trevorism.com/ping").text
     }
     catch (Exception ignored){
         Thread.sleep(10000)
-        new URL("https://alerts.datastore.trevorism.com/ping").text
+        new URL("https://alert.datastore.trevorism.com/ping").text
     }
 }
 
-When(/I navigate to {url}/) { String url ->
-    contextRootContent = new URL(url).text
+When(/I navigate to {string}/) { String string ->
+    contextRootContent = new URL(string).text
 }
 
 Then(/then a link to the help page is displayed/) {  ->
@@ -29,8 +29,8 @@ Then(/then a link to the help page is displayed/) {  ->
     assert contextRootContent.contains("/help")
 }
 
-When(/I ping the application deployed to {url}/) { String url ->
-    pingContent = new URL("${url}/ping").text
+When(/I ping the application deployed to {string}/) { String string ->
+    pingContent = new URL("${string}/ping").text
 }
 
 Then(/pong is returned, to indicate the service is alive/) {  ->
