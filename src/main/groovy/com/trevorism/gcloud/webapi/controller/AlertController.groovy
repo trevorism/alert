@@ -1,9 +1,8 @@
 package com.trevorism.gcloud.webapi.controller
 
-import com.trevorism.event.EventProducer
-import com.trevorism.event.PingingEventProducer
-import com.trevorism.gcloud.model.Email
+import com.trevorism.EmailClient
 import com.trevorism.http.headers.HeadersHttpClient
+import com.trevorism.model.Email
 import com.trevorism.secure.Roles
 import com.trevorism.secure.Secure
 import io.swagger.annotations.Api
@@ -26,7 +25,7 @@ import java.util.logging.Logger
 class AlertController {
 
     private static final Logger log = Logger.getLogger(AlertController.class.name)
-    EventProducer<Email> eventProducer = new PingingEventProducer<>()
+    EmailClient emailClient = new EmailClient()
 
     @ApiOperation(value = "Send an alert")
     @POST
@@ -41,7 +40,7 @@ class AlertController {
         log.info("Sending an alert with correlationId: ${correlationId}")
 
         Email data = createEmail(inputData, correlationId)
-        eventProducer.sendEvent("email", data, correlationId)
+        emailClient.sendEmail(data, correlationId)
         return data
     }
 
@@ -56,4 +55,5 @@ class AlertController {
     private static String buildAlertText(String correlationId, Map inputData) {
         "${inputData}\nCorrelation ID: ${correlationId}"
     }
+    
 }

@@ -1,7 +1,8 @@
 package com.trevorism.gcloud.webapi.controller
 
-import com.trevorism.event.EventProducer
-import com.trevorism.gcloud.model.Email
+import com.trevorism.EmailClient
+import com.trevorism.https.SecureHttpClient
+import com.trevorism.model.Email
 import org.junit.Test
 
 import javax.ws.rs.core.HttpHeaders
@@ -14,7 +15,8 @@ class AlertControllerTest {
     @Test
     void testSendAlert() {
         AlertController ac = new AlertController()
-        ac.eventProducer = [sendEvent:{e,c,s ->}] as EventProducer
+        EmailClient client = new EmailClient([post: { x, y, z -> "true" }] as SecureHttpClient)
+        ac.emailClient = client
         Email result = ac.sendAlert([getHeaderString:{ s -> null}] as HttpHeaders, [:])
 
         assert result
@@ -29,7 +31,8 @@ class AlertControllerTest {
     @Test
     void testSendAlertWithCorrelationIdAndData() {
         AlertController ac = new AlertController()
-        ac.eventProducer = [sendEvent:{e,c,s ->}] as EventProducer
+        EmailClient client = new EmailClient([post: { x, y, z -> "true" }] as SecureHttpClient)
+        ac.emailClient = client
         Email result = ac.sendAlert([getHeaderString:{ s -> "432"}] as HttpHeaders, ["test":"value"])
 
         assert result
