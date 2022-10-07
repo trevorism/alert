@@ -4,9 +4,9 @@
 ![GitHub language count](https://img.shields.io/github/languages/count/trevorism/alert)
 ![GitHub top language](https://img.shields.io/github/languages/top/trevorism/alert)
 
-Latest Version: 0.3.0
+Latest Version: 0.4.0
 
-Sends alerts. Deployed to [Trevorism Alerts](https://alert.datastore.trevorism.com/)
+Sends alerts. Deployed to [Trevorism Alerts](https://alert.action.trevorism.com/)
 
 ## How to build
 `gradle clean build`

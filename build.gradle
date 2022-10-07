@@ -51,7 +51,7 @@ dependencies {
     implementation 'io.swagger:swagger-jersey2-jaxrs:1.6.6'
     implementation 'org.slf4j:slf4j-nop:1.7.36'
 
-    implementation 'com.trevorism:reactions-client:0.2.0'
+    implementation 'com.trevorism:reactions-client:0.3.0'
 
     acceptanceImplementation 'io.cucumber:cucumber-groovy:4.7.1'
     testImplementation 'junit:junit:4.13.2'
@@ -60,7 +60,7 @@ dependencies {
 appengine {
     deploy {
         projectId = "trevorism-gcloud"
-        version = "0-3-0"
+        version = "0-4-0"
         stopPreviousVersion = true
         promote = true
     }
