@@ -2,6 +2,7 @@ package com.trevorism.gcloud.webapi.controller
 
 import com.trevorism.EmailClient
 import com.trevorism.https.SecureHttpClient
+import com.trevorism.model.Alert
 import com.trevorism.model.Email
 import org.junit.Test
 
@@ -17,15 +18,13 @@ class AlertControllerTest {
         AlertController ac = new AlertController()
         EmailClient client = new EmailClient([post: { x, y, z -> "{}" }] as SecureHttpClient)
         ac.emailClient = client
-        Email result = ac.sendAlert([getHeaderString:{ s -> null}] as HttpHeaders, [:])
+        Email result = ac.sendAlert([getHeaderString:{ s -> null}] as HttpHeaders, new Alert())
 
         assert result
         assert result.recipients
         assert result.recipients[0] == "alerts@trevorism.com"
         assert result.subject
-
-        assert result.body.contains("[:]")
-        assert result.body.contains("Correlation ID:")
+        assert result.body.contains("Check logs for correlation id")
     }
 
     @Test
@@ -33,13 +32,12 @@ class AlertControllerTest {
         AlertController ac = new AlertController()
         EmailClient client = new EmailClient([post: { x, y, z -> "{}" }] as SecureHttpClient)
         ac.emailClient = client
-        Email result = ac.sendAlert([getHeaderString:{ s -> "432"}] as HttpHeaders, ["test":"value"])
+        Email result = ac.sendAlert([getHeaderString:{ s -> "432"}] as HttpHeaders, new Alert(body: "test body"))
 
         assert result
         assert result.recipients
         assert result.recipients[0] == "alerts@trevorism.com"
         assert result.subject.contains("432")
-        assert result.body.contains("[test:value]")
-        assert result.body.contains("Correlation ID: 432")
+        assert "test body" == result.body
     }
 }

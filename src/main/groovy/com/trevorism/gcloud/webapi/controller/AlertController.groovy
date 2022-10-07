@@ -2,6 +2,7 @@ package com.trevorism.gcloud.webapi.controller
 
 import com.trevorism.EmailClient
 import com.trevorism.http.headers.HeadersHttpClient
+import com.trevorism.model.Alert
 import com.trevorism.model.Email
 import com.trevorism.secure.Roles
 import com.trevorism.secure.Secure
@@ -32,7 +33,7 @@ class AlertController {
     @Secure(Roles.USER)
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    Email sendAlert(@Context HttpHeaders headers, Map inputData) {
+    Email sendAlert(@Context HttpHeaders headers, Alert inputData) {
         String correlationId = headers?.getHeaderString(HeadersHttpClient.CORRELATION_ID_HEADER_KEY)
         if(!correlationId)
             correlationId = UUID.randomUUID().toString()
@@ -44,16 +45,16 @@ class AlertController {
         return data
     }
 
-    private Email createEmail(Map inputData, String correlationId) {
+    private Email createEmail(Alert inputData, String correlationId) {
         def data = new Email()
         data.recipients = ["alerts@trevorism.com"]
-        data.subject = (inputData["subject"]) ? (inputData["subject"]).toString() : "Alert: ${correlationId}"
-        data.body = (inputData["body"]) ? (inputData["body"]).toString() : buildAlertText(correlationId, inputData)
+        data.subject = (inputData.subject) ? (inputData.subject).toString() : "Alert: ${correlationId}"
+        data.body = (inputData.body) ? (inputData.body).toString() : buildAlertText(correlationId)
         data
     }
 
-    private static String buildAlertText(String correlationId, Map inputData) {
-        "${inputData}\nCorrelation ID: ${correlationId}"
+    private static String buildAlertText(String correlationId) {
+        "Check logs for correlation id: ${correlationId}"
     }
     
 }
