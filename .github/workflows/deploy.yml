@@ -1,20 +1,29 @@
-name: Build and Deploy App to GCP
+name: Deploy tested project to GCP
 
 on:
   push:
     branches: [ master ]
-  pull_request:
-    branches: [ master ]
 
 jobs:
-  call-deliver:
+  call-build:
+    uses: trevorism/actions-workflows/.github/workflows/build.yml@master
+
+  call-deploy:
     uses: trevorism/actions-workflows/.github/workflows/deploy.yml@master
-    secrets:
-      CLIENT_ID: ${{secrets.CLIENT_ID}}
-      CLIENT_SECRET: ${{secrets.CLIENT_SECRET}}
-      SIGNING_KEY: ${{secrets.SIGNING_KEY}}
+    if: success() || failure()
+    needs: [call-build, call-accept-before]
     with:
-      service_account: 'github-trevorism-gcloud@trevorism-gcloud.iam.gserviceaccount.com'
-      workload_identity_provider: 'projects/159773244195/locations/global/workloadIdentityPools/github-trevorism-gcloud-pool/providers/trevorism-gcloud-provider'
-      version: 0-3-0
-      run_acceptance: true
+      gcp_project: 'trevorism-action'
+      gcp_project_id: '846837196321'
+      version: '0-3-0'
+    secrets:
+      CLIENT_ID: ${{ secrets.CLIENT_ID }}
+      CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+      SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
+
+  call-accept-before:
+    uses: trevorism/actions-workflows/.github/workflows/accept.yml@master
+
+  call-accept-after:
+    uses: trevorism/actions-workflows/.github/workflows/accept.yml@master
+    needs: call-deploy
