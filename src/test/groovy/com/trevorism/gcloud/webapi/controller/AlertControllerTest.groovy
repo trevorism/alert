@@ -15,7 +15,7 @@ class AlertControllerTest {
     @Test
     void testSendAlert() {
         AlertController ac = new AlertController()
-        EmailClient client = new EmailClient([post: { x, y, z -> "true" }] as SecureHttpClient)
+        EmailClient client = new EmailClient([post: { x, y, z -> "{}" }] as SecureHttpClient)
         ac.emailClient = client
         Email result = ac.sendAlert([getHeaderString:{ s -> null}] as HttpHeaders, [:])
 
@@ -31,7 +31,7 @@ class AlertControllerTest {
     @Test
     void testSendAlertWithCorrelationIdAndData() {
         AlertController ac = new AlertController()
-        EmailClient client = new EmailClient([post: { x, y, z -> "true" }] as SecureHttpClient)
+        EmailClient client = new EmailClient([post: { x, y, z -> "{}" }] as SecureHttpClient)
         ac.emailClient = client
         Email result = ac.sendAlert([getHeaderString:{ s -> "432"}] as HttpHeaders, ["test":"value"])
 
