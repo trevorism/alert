@@ -54,7 +54,8 @@ class AlertController {
     }
 
     private static String buildAlertText(String body, String correlationId) {
-        "${body}\n\nFor logs, check: https://console.cloud.google.com/logs/query;query=${correlationId}?authuser=1&project=trevorism-action"
+        String firstPart = body ? "${body}\n\n" : ""
+        "${firstPart}For logs, check: https://console.cloud.google.com/logs/query;query=${correlationId}?authuser=1&project=trevorism-action"
     }
     
 }

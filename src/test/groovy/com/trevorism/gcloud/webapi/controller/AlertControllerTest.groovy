@@ -24,7 +24,7 @@ class AlertControllerTest {
         assert result.recipients
         assert result.recipients[0] == "alerts@trevorism.com"
         assert result.subject
-        assert result.body.contains("Check logs for correlation id")
+        assert result.body.contains("For logs, check")
     }
 
     @Test
@@ -38,6 +38,6 @@ class AlertControllerTest {
         assert result.recipients
         assert result.recipients[0] == "alerts@trevorism.com"
         assert result.subject.contains("432")
-        assert "test body" == result.body
+        assert result.body.contains("test body")
     }
 }
