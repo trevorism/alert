@@ -30,7 +30,7 @@ class AlertController {
 
     @ApiOperation(value = "Send an alert")
     @POST
-    @Secure(Roles.USER)
+    @Secure(value = Roles.USER, allowInternal = true)
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     Email sendAlert(@Context HttpHeaders headers, Alert inputData) {
