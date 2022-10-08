@@ -49,12 +49,12 @@ class AlertController {
         def data = new Email()
         data.recipients = ["alerts@trevorism.com"]
         data.subject = (inputData.subject) ? (inputData.subject).toString() : "Alert: ${correlationId}"
-        data.body = (inputData.body) ? (inputData.body).toString() : buildAlertText(correlationId)
+        data.body = buildAlertText(inputData.body, correlationId)
         data
     }
 
-    private static String buildAlertText(String correlationId) {
-        "Check logs for correlation id: ${correlationId}"
+    private static String buildAlertText(String body, String correlationId) {
+        "${body}\n\nFor logs, check: https://console.cloud.google.com/logs/query;query=${correlationId}?authuser=1&project=trevorism-action"
     }
     
 }
