@@ -1,12 +1,12 @@
-package com.trevorism.gcloud.webapi.controller
+package com.trevorism.alert
 
 import com.trevorism.EmailClient
 import com.trevorism.https.SecureHttpClient
 import com.trevorism.model.Alert
 import com.trevorism.model.Email
-import org.junit.Test
+import io.micronaut.http.HttpHeaders
+import org.junit.jupiter.api.Test
 
-import javax.ws.rs.core.HttpHeaders
 
 /**
  * @author tbrooks
@@ -18,7 +18,7 @@ class AlertControllerTest {
         AlertController ac = new AlertController()
         EmailClient client = new EmailClient([post: { x, y, z -> "{}" }] as SecureHttpClient)
         ac.emailClient = client
-        Email result = ac.sendAlert([getHeaderString:{ s -> null}] as HttpHeaders, new Alert())
+        Email result = ac.sendAlert([getValue:{ s -> null}] as HttpHeaders, new Alert())
 
         assert result
         assert result.recipients
@@ -32,7 +32,7 @@ class AlertControllerTest {
         AlertController ac = new AlertController()
         EmailClient client = new EmailClient([post: { x, y, z -> "{}" }] as SecureHttpClient)
         ac.emailClient = client
-        Email result = ac.sendAlert([getHeaderString:{ s -> "432"}] as HttpHeaders, new Alert(body: "test body"))
+        Email result = ac.sendAlert([getValue:{ s -> "432"}] as HttpHeaders, new Alert(body: "test body"))
 
         assert result
         assert result.recipients

@@ -1,40 +1,29 @@
-package com.trevorism.gcloud.webapi.controller
+package com.trevorism.alert
 
 import com.trevorism.EmailClient
-import com.trevorism.http.headers.HeadersHttpClient
 import com.trevorism.model.Alert
 import com.trevorism.model.Email
 import com.trevorism.secure.Roles
 import com.trevorism.secure.Secure
-import io.swagger.annotations.Api
-import io.swagger.annotations.ApiOperation
-
-import javax.ws.rs.Consumes
-import javax.ws.rs.POST
-import javax.ws.rs.Path
-import javax.ws.rs.Produces
-import javax.ws.rs.core.Context
-import javax.ws.rs.core.HttpHeaders
-import javax.ws.rs.core.MediaType
+import io.micronaut.http.HttpHeaders
+import io.micronaut.http.MediaType
+import io.micronaut.http.annotation.*
+import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.tags.Tag
 import java.util.logging.Logger
 
-/**
- * @author tbrooks
- */
-@Api("Alert Operations")
-@Path("/alert")
+@Controller("/alert")
 class AlertController {
 
     private static final Logger log = Logger.getLogger(AlertController.class.name)
     EmailClient emailClient = new EmailClient()
 
-    @ApiOperation(value = "Send an alert")
-    @POST
+    @Tag(name = "Alert Operations")
+    @Operation(summary = "Send an alert")
+    @Post(value = "/", produces = MediaType.APPLICATION_JSON, consumes = MediaType.APPLICATION_JSON)
     @Secure(value = Roles.USER, allowInternal = true)
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    Email sendAlert(@Context HttpHeaders headers, Alert inputData) {
-        String correlationId = headers?.getHeaderString(HeadersHttpClient.CORRELATION_ID_HEADER_KEY)
+    Email sendAlert(HttpHeaders headers, @Body Alert inputData) {
+        String correlationId = headers?.getValue("X-Correlation-Id")
         if(!correlationId)
             correlationId = UUID.randomUUID().toString()
 
