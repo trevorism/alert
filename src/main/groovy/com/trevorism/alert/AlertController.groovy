@@ -1,6 +1,7 @@
 package com.trevorism.alert
 
 import com.trevorism.EmailClient
+import com.trevorism.https.SecureHttpClient
 import com.trevorism.model.Alert
 import com.trevorism.model.Email
 import com.trevorism.secure.Roles
@@ -16,7 +17,11 @@ import java.util.logging.Logger
 class AlertController {
 
     private static final Logger log = Logger.getLogger(AlertController.class.name)
-    EmailClient emailClient = new EmailClient()
+    EmailClient emailClient
+
+    AlertController(SecureHttpClient secureHttpClient) {
+        this.emailClient = new EmailClient(secureHttpClient)
+    }
 
     @Tag(name = "Alert Operations")
     @Operation(summary = "Send an alert")
@@ -28,9 +33,8 @@ class AlertController {
             correlationId = UUID.randomUUID().toString()
 
         log.info("Sending an alert with correlationId: ${correlationId}")
-
         Email data = createEmail(inputData, correlationId)
-        emailClient.sendEmail(data, correlationId)
+        emailClient.sendEmail(data)
         return data
     }
 
