@@ -10,20 +10,20 @@ class RootControllerTest {
 
     @Test
     void testRootControllerEndpoints(){
-        com.trevorism.alert.RootController rootController = new com.trevorism.alert.RootController()
-        assert rootController.index().getBody().get()[0].contains("ping")
-        assert rootController.index().getBody().get()[1].contains("help")
+        RootController rootController = new RootController()
+        assert rootController.index().getBody().get().contains("ping")
+        assert rootController.index().getBody().get().contains("help")
     }
 
     @Test
     void testRootControllerPing(){
-        com.trevorism.alert.RootController rootController = new com.trevorism.alert.RootController()
+        RootController rootController = new RootController()
         assert rootController.ping() == "pong"
     }
 
     @Test
     void testRootControllerHelpPage(){
-        com.trevorism.alert.RootController rootController = new com.trevorism.alert.RootController()
+        RootController rootController = new RootController()
         assert rootController.help()
     }
 }
