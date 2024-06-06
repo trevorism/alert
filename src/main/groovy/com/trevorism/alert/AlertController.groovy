@@ -38,12 +38,12 @@ class AlertController {
         return data
     }
 
-    private Email createEmail(Alert inputData, String correlationId) {
-        def data = new Email()
+    private static Email createEmail(Alert inputData, String correlationId) {
+        Email data = new Email()
         data.recipients = ["alerts@trevorism.com"]
         data.subject = (inputData.subject) ? (inputData.subject).toString() : "Alert: ${correlationId}"
         data.body = buildAlertText(inputData.body, correlationId)
-        data
+        return data
     }
 
     private static String buildAlertText(String body, String correlationId) {
