@@ -16,24 +16,23 @@ class AlertControllerTest {
     @Test
     void testSendAlert() {
         AlertController ac = new AlertController([post: { x, z -> "{}" }] as SecureHttpClient)
-        Email result = ac.sendAlert([getValue:{ s -> null}] as HttpHeaders, new Alert())
+        Email result = ac.sendAlert(new Alert())
 
         assert result
         assert result.recipients
         assert result.recipients[0] == "alerts@trevorism.com"
         assert result.subject
-        assert result.body.contains("For logs, check")
     }
 
     @Test
     void testSendAlertWithCorrelationIdAndData() {
         AlertController ac = new AlertController([post: { x, z -> "{}" }] as SecureHttpClient)
-        Email result = ac.sendAlert([getValue:{ s -> "432"}] as HttpHeaders, new Alert(body: "test body"))
+        Email result = ac.sendAlert(new Alert(body: "test body"))
 
         assert result
         assert result.recipients
         assert result.recipients[0] == "alerts@trevorism.com"
-        assert result.subject.contains("432")
+        assert result.subject
         assert result.body.contains("test body")
     }
 }
