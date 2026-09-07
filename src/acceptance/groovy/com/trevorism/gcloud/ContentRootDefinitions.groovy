@@ -26,7 +26,7 @@ When(/I navigate to {string}/) { String string ->
     contextRootContent = new URL(baseUrl).text
 }
 
-Then(/then a link to the help page is displayed/) {  ->
+Then(/a link to the help page is displayed/) {  ->
     assert contextRootContent
     assert contextRootContent.contains("/help")
 }

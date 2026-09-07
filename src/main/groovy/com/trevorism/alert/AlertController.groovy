@@ -25,7 +25,7 @@ class AlertController {
     }
 
     @Tag(name = "Alert Operations")
-    @Operation(summary = "Send an alert")
+    @Operation(summary = "Send an alert **Secure")
     @Post(value = "/", produces = MediaType.APPLICATION_JSON, consumes = MediaType.APPLICATION_JSON)
     @Secure(value = Roles.USER, allowInternal = true, permissions = Permissions.EXECUTE)
     Email sendAlert(@Body Alert inputData) {

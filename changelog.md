@@ -1,3 +1,7 @@
+## 0.9.0
+
+Update to the latest dependencies.
+
 ## 0.8.0
 
 Upgrade to Micronaut 5.0.0, Java 25, Gradle latest. Updated build plugins and dependencies.
